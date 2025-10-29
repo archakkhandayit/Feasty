@@ -22,7 +22,7 @@ const RestaurantMenu = () => {
             reviewCount={item.reviewCount}
             description={item.description}
             imageUrl={item.imageUrl}
-            initialQuantity={null}
+            initialQuantity={0}
           />
         ))}
       </div>
