@@ -1,0 +1,5 @@
+{
+  "name": "Outlet Admin Dashboard",
+  "description": "A comprehensive admin dashboard for restaurant outlets to manage menus and track food delivery orders through various stages, from incoming to delivered.",
+  "requestFramePermissions": []
+}

@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import DeliveryAddressForm from "../Components/DeliveryAddressForm.jsx";
 
-import foodItems from "../../Data/cartItems.js";
+// import foodItems,  { salesTaxRate, shippingFee } from "../../Data/cartItems.js";
+import cartObject from "../../Data/cartItems.js";
+
+const foodItems = cartObject?.foodItems || [];
+const salesTaxRate = cartObject?.salesTaxRate || 0;
+const shippingFee = cartObject?.shippingFee || 0;
 
 // Individual item component within the order summary
 const OrderItem = ({ item, onQuantityChange, onRemoveItem }) => {
@@ -69,8 +74,8 @@ const OrderSummaryCard = ({ initialItems = [] }) => {
   const [items, setItems] = useState(initialItems);
   const [discountCode, setDiscountCode] = useState("");
 
-  const salesTaxRate = 0.18; // 18.0%
-  const shippingFee = 35; // 0 = FREE
+  // const salesTaxRate = 0.18; // 18.0%
+  // const shippingFee = 35; // 0 = FREE
 
   const handleQuantityChange = (id, newQuantity) => {
     setItems((prevItems) =>
@@ -94,6 +99,11 @@ const OrderSummaryCard = ({ initialItems = [] }) => {
     // In real app: navigate to payment page or trigger Razorpay checkout
     alert(`Proceeding to payment of ₹${totalDue.toFixed(2)}`);
   };
+
+  const handleDiscountCode = (e) => {
+    alert("Invalid Coupon Code");
+    setDiscountCode("");
+  }
 
   const subtotal = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -144,6 +154,7 @@ const OrderSummaryCard = ({ initialItems = [] }) => {
           <button
             className="bg-indigo-600 text-white font-semibold py-3 px-6 rounded-r-lg hover:bg-indigo-700 transition-colors duration-200"
             aria-label="Apply discount code"
+            onClick={handleDiscountCode}
           >
             Apply
           </button>
@@ -153,21 +164,21 @@ const OrderSummaryCard = ({ initialItems = [] }) => {
       {/* Totals */}
       <div className="space-y-3 mb-6">
         <div className="flex justify-between text-gray-700">
-          <span>Subtotal</span>
+          <span>Item Total</span>
           <span className="font-medium">₹{subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-gray-700">
-          <span>Sales tax ({(salesTaxRate * 100).toFixed(1)}%)</span>
+          <span>GST & Other Charges ({(salesTaxRate * 100).toFixed(1)}%)</span>
           <span className="font-medium">₹{salesTax.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-gray-700">
-          <span>Shipping Fee</span>
+          <span>Delivery Fee</span>
           <span className="font-medium text-green-600">
             {shippingFee === 0 ? "FREE" : `₹${shippingFee.toFixed(2)}`}
           </span>
         </div>
         <div className="flex justify-between items-baseline pt-3 border-t border-gray-200">
-          <span className="text-xl font-bold text-gray-800">Total due</span>
+          <span className="text-xl font-bold text-gray-800">To Pay</span>
           <span className="text-2xl font-extrabold text-indigo-600">
             ₹{totalDue.toFixed(2)}
           </span>

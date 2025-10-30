@@ -17,6 +17,7 @@ const RestaurantMenu = () => {
           <FoodCard
             key={item.id}
             title={item.title}
+            foodTypeVeg={item.foodTypeVeg}
             price={item.price}
             rating={item.rating}
             reviewCount={item.reviewCount}
