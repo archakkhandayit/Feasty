@@ -56,9 +56,9 @@ export default function LoginAdmin() {
               />
             </div>
             {/* Changed link colors */}
-            <a className="inline-block align-baseline font-bold text-sm text-orange-600 hover:text-orange-500 mt-2" href="#">
+            {/* <a className="inline-block align-baseline font-bold text-sm text-orange-600 hover:text-orange-500 mt-2" href="#">
               Forgot Password?
-            </a>
+            </a> */}
           </div>
           
           <div className="flex items-center justify-between">
