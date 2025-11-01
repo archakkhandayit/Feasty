@@ -1,10 +1,10 @@
-package com.example.feasty;
+package com.codingshuttle.youtube.internalWorkingOfSpringBoot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FeastyApplicationTests {
+class InternalWorkingOfSpringBootApplicationTests {
 
 	@Test
 	void contextLoads() {
