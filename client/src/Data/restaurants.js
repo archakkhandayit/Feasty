@@ -1,3 +1,5 @@
+// restaurants.js
+
 const OutletList = [
   {
     id: 1,

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-// Input Field Component for reusability
+// Input Field Component (Unchanged)
 const InputField = ({
   label,
   name,
@@ -52,18 +52,34 @@ const InputField = ({
   </div>
 );
 
-const DeliveryAddressForm = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    phone: "",
-    addressLine1: "",
-    addressLine2: "",
-    city: "",
-    zipCode: "",
-    deliveryInstructions: "",
-  });
+// Empty address structure
+const emptyAddress = {
+  fullName: "",
+  phone: "",
+  addressLine1: "",
+  addressLine2: "",
+  city: "",
+  zipCode: "",
+  deliveryInstructions: "",
+};
 
+// --- DeliveryAddressForm Component (Updated) ---
+// Now receives the saved address and a save function as props
+const DeliveryAddressForm = ({ savedAddress, onSaveAddress }) => {
+  // The form manages its own draft state (formData)
+  // It is initialized with the savedAddress from the hook
+  const [formData, setFormData] = useState(savedAddress || emptyAddress);
   const [errors, setErrors] = useState({});
+  const [isSaved, setIsSaved] = useState(false);
+
+  // Effect to update the form if the savedAddress prop changes
+  // (e.g., loaded from the hook after component mounts)
+  useEffect(() => {
+    setFormData(savedAddress || emptyAddress);
+    if(savedAddress) {
+        setIsSaved(true); // If we load a saved address, mark as saved
+    }
+  }, [savedAddress]);
 
   // Basic form validation (simplified for demo)
   const validateForm = () => {
@@ -84,23 +100,25 @@ const DeliveryAddressForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setIsSaved(false); // Any change marks the form as unsaved
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSaved(false);
     if (validateForm()) {
-      // In a real application, you would send formData to your backend here
+      // Call the onSaveAddress function from the hook
+      onSaveAddress(formData);
+      setIsSaved(true); // Mark as saved
       console.log("Address saved successfully:", formData);
-      alert("Address Saved! (Check console for data)");
-      // You would typically navigate to the payment screen after this
+      // In a real app, you might show a success toast
     } else {
       console.error("Validation failed", errors);
     }
   };
 
   return (
-    // <div className="min-h-screen bg-gray-50 p-4 sm:p-8 flex justify-center items-start pt-10">
-    <div className="w-full max-w-lg bg-white shadow-xl rounded-xl p-6 md:p-8">
+    <div className="w-full max-w-lg bg-white p-0">
       <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-3">
         Delivery Address
       </h2>
@@ -184,13 +202,17 @@ const DeliveryAddressForm = () => {
         {/* Save/Continue Button */}
         <button
           type="submit"
-          className="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-md mt-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className={`w-full text-white font-semibold py-3 rounded-lg transition-colors duration-200 shadow-md mt-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+            isSaved 
+              ? "bg-green-600 hover:bg-green-700 focus:ring-green-500"
+              : "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
+          }`}
         >
+          {/* {isSaved ? "Address Saved ✓" : "Save Address & Continue"} */}
           Save Address & Continue
         </button>
       </form>
     </div>
-    // </div>
   );
 };
 

@@ -1,41 +1,6 @@
-// ---------------- Mock Order History Data ----------------
-const orderHistoryData = 
-// [
-//   {
-//     id: "ord123",
-//     restaurantName: "Pizza Hut",
-//     orderDate: "Oct 25, 2025",
-//     itemsSummary: "1x Medium Veggie Pizza, 2x Coke",
-//     totalAmount: 550.0,
-//     status: "Delivered",
-//   },
-//   {
-//     id: "ord124",
-//     restaurantName: "Biryani House",
-//     orderDate: "Oct 27, 2025",
-//     itemsSummary: "1x Chicken Biryani, 1x Raita",
-//     totalAmount: 320.0,
-//     status: "Out for Delivery",
-//   },
-//   {
-//     id: "ord125",
-//     restaurantName: "Domino’s Pizza",
-//     orderDate: "Oct 28, 2025",
-//     itemsSummary: "2x Cheese Burst Pizza, 1x Pepsi",
-//     totalAmount: 799.0,
-//     status: "Processing",
-//   },
-//   {
-//     id: "ord126",
-//     restaurantName: "Burger King",
-//     orderDate: "Oct 29, 2025",
-//     itemsSummary: "2x Whopper Meals, 2x Coke",
-//     totalAmount: 640.0,
-//     status: "Ordered",
-//   },
-// ];
+// orderHistoryData.js
 
-[
+const orderHistoryData = [
   {
     id: "order123456",
     restaurantName: "City Center",
@@ -84,24 +49,21 @@ const orderHistoryData =
         name: "Hyderabadi Biryani",
         price: 229,
         quantity: 1,
-        imageUrl:
-          "https://placehold.co/600x400/f59e0b/fff?text=Biryani",
+        imageUrl: "https://placehold.co/600x400/f59e0b/fff?text=Biryani",
       },
       {
         id: "raita",
         name: "Boondi Raita",
         price: 59,
         quantity: 1,
-        imageUrl:
-          "https://placehold.co/600x400/84cc16/fff?text=Raita",
+        imageUrl: "https://placehold.co/600x400/84cc16/fff?text=Raita",
       },
       {
         id: "gulab-jamun",
         name: "Gulab Jamun (2pcs)",
         price: 99,
         quantity: 1,
-        imageUrl:
-          "https://placehold.co/600x400/f97316/fff?text=Gulab+Jamun",
+        imageUrl: "https://placehold.co/600x400/f97316/fff?text=Gulab+Jamun",
       },
     ],
     subtotal: 387,
@@ -122,16 +84,14 @@ const orderHistoryData =
         name: "Chicken Burger",
         price: 159,
         quantity: 2,
-        imageUrl:
-          "https://placehold.co/600x400/60a5fa/fff?text=Burger",
+        imageUrl: "https://placehold.co/600x400/60a5fa/fff?text=Burger",
       },
       {
         id: "fries-large",
         name: "Large Fries",
         price: 99,
         quantity: 1,
-        imageUrl:
-          "https://placehold.co/600x400/f87171/fff?text=Fries",
+        imageUrl: "https://placehold.co/600x400/f87171/fff?text=Fries",
       },
     ],
     subtotal: 417,
@@ -152,16 +112,14 @@ const orderHistoryData =
         name: "Chocolate Truffle Cake",
         price: 499,
         quantity: 1,
-        imageUrl:
-          "https://placehold.co/600x400/a855f7/fff?text=Chocolate+Cake",
+        imageUrl: "https://placehold.co/600x400/a855f7/fff?text=Chocolate+Cake",
       },
       {
         id: "brownie",
         name: "Fudge Brownie",
         price: 120,
         quantity: 2,
-        imageUrl:
-          "https://placehold.co/600x400/f87171/fff?text=Brownie",
+        imageUrl: "https://placehold.co/600x400/f87171/fff?text=Brownie",
       },
     ],
     subtotal: 739,

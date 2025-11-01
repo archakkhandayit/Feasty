@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { Package, Loader2, Truck, CheckCircle } from "lucide-react";
+import { Package, Loader2, Truck, CheckCircle, AlertTriangle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "../../components/ui/dialog";
-
-import orderHistoryData from "../../Data/orderHistoryData";
-
+} from "../../components/ui/dialog.jsx"; // Corrected import path
+import { useMockData } from "../hooks/useMockData.js"; // Corrected import path
 
 // Helper function to create items summary from items array
 function generateItemsSummary(items) {
@@ -53,7 +51,7 @@ const getStatusInfo = (status) => {
 const OrderCard = ({ order, onClick  }) => {
   const { icon, style } = getStatusInfo(order.status);
   return (
-    <div onClick={() => onClick(order)} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-5 sm:p-6 mb-5 w-full">
+    <div onClick={() => onClick(order)} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-5 sm:p-6 mb-5 w-full cursor-pointer">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
         <div>
           <h3 className="text-lg font-bold text-gray-800">
@@ -71,7 +69,7 @@ const OrderCard = ({ order, onClick  }) => {
       </div>
 
       <div className="border-t mt-4 pt-3">
-        <p className="text-gray-700 text-sm sm:text-base mb-2">
+        <p className="text-gray-700 text-sm sm:text-base mb-2 truncate">
           {order.itemsSummary}
         </p>
         <div className="flex justify-end">
@@ -84,18 +82,40 @@ const OrderCard = ({ order, onClick  }) => {
   );
 };
 
+// --- MyOrders Page (Updated) ---
 const MyOrders = () => {
-
   const [selectedOrder, setSelectedOrder] = useState(null);
   
-  const updatedOrders = addItemsSummaryToOrders(orderHistoryData);
+  // Get orders from the hook
+  const { orders, loading, error } = useMockData();
+  
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[80vh]">
+        <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
+        <span className="text-xl ml-4 text-gray-700">Loading Orders...</span>
+      </div>
+    );
+  }
 
+  if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-[80vh] text-red-600">
+        <AlertTriangle className="w-16 h-16" />
+        <h2 className="text-2xl font-semibold mt-4">Oops! Something went wrong.</h2>
+        <p className="text-lg">{error}</p>
+      </div>
+    );
+  }
+
+  // Process the orders from the hook
+  const updatedOrders = addItemsSummaryToOrders(orders);
   const sortedOrders = [...updatedOrders].sort(
     (a, b) => new Date(b.orderDate) - new Date(a.orderDate)
   );
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 mt-10 mb-20">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 mt-24 mb-20">
       <h1 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
         Order History
       </h1>
@@ -103,12 +123,12 @@ const MyOrders = () => {
       {sortedOrders.length > 0 ? (
         sortedOrders.map((order) => <OrderCard key={order.id} onClick={setSelectedOrder} order={order} />)
       ) : (
-        <div className="flex items-center justify-center h-64 text-gray-500 text-lg">
+        <div className="flex items-center justify-center h-64 text-gray-500 text-lg bg-gray-50 rounded-lg">
           No orders yet!
         </div>
       )}
 
-      {/* 🔍 Order Detail Popup */}
+      {/* Order Detail Popup */}
       <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
         <DialogContent className="max-w-md">
           {selectedOrder && (
@@ -144,18 +164,28 @@ const MyOrders = () => {
                         <span>
                           {item.quantity}x {item.name}
                         </span>
-                        <span>₹{item.price * item.quantity}</span>
+                        <span>₹{(item.price * item.quantity).toFixed(2)}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
                 <div className="mt-4 border-t pt-3 text-sm">
-                  <p>Subtotal: ₹{selectedOrder.subtotal.toFixed(2)}</p>
-                  <p>Tax (18%): ₹{selectedOrder.salesTax.toFixed(2)}</p>
-                  <p>Delivery Fee: ₹{selectedOrder.shippingFee.toFixed(2)}</p>
-                  <p className="font-bold mt-2 text-lg">
-                    Total: ₹{selectedOrder.totalAmount.toFixed(2)}
+                  <p className="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span>₹{selectedOrder.subtotal.toFixed(2)}</span>
+                  </p>
+                  <p className="flex justify-between">
+                    <span>Tax ({(selectedOrder.salesTaxRate * 100).toFixed(0)}%):</span>
+                    <span>₹{selectedOrder.salesTax.toFixed(2)}</span>
+                  </p>
+                  <p className="flex justify-between">
+                    <span>Delivery Fee:</span>
+                    <span>₹{selectedOrder.shippingFee.toFixed(2)}</span>
+                  </p>
+                  <p className="flex justify-between font-bold mt-2 text-lg">
+                    <span>Total:</span>
+                    <span>₹{selectedOrder.totalAmount.toFixed(2)}</span>
                   </p>
                 </div>
               </div>
